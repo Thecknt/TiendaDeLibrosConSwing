@@ -31,22 +31,58 @@ public class BookForm extends JFrame {
         this.bookService = bookService;
 
         startForm();
-        agregarButton.addActionListener(e -> {
+        agregarButton.addActionListener(e -> bookAdd());
 
-        });
+
         modificarButton.addActionListener(e -> {
 
         });
+
         eliminarButton.addActionListener(e -> {
 
         });
+    }
+
+    public void bookAdd() {
+     //Voy a leer los valores del formulario
+        if (bookText.getText().equals("")){
+            showMessage("Ingresa el Nombre Del Libro");
+            bookText.requestFocusInWindow();
+            return;
+        }
+        String bookName = bookText.getText();
+        String author = authorText.getText();
+        Double price = Double.parseDouble(priceText.getText());
+        Integer stock = Integer.parseInt(stockText.getText());
+        //Creo el objeto Libro
+
+        Book book = new Book();
+        book.setBookTitle(bookName);
+        book.setAuthor(author);
+        book.setPrice(price);
+        book.setStock(stock);
+
+        this.bookService.saveBook(book);
+        showMessage("Libro Agregado!");
+        clearForm();
+        showAllBooks();
+    }
+
+    private void clearForm(){
+        bookText.setText("");
+        authorText.setText("");
+        priceText.setText("");
+        stockText.setText("");
+    }
+    private void showMessage(String message){
+        JOptionPane.showMessageDialog(this,message);
     }
 
     public void startForm() {
         setContentPane(panel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(600, 400);
+        setSize(900, 600);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension sizeScreen = toolkit.getScreenSize();
         int x = (sizeScreen.width - getWidth() / 2);
