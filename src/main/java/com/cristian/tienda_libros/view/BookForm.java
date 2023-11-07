@@ -165,8 +165,8 @@ public class BookForm extends JFrame {
         setSize(900, 600);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension sizeScreen = toolkit.getScreenSize();
-        int x = (sizeScreen.width - getWidth() / 2);
-        int y = (sizeScreen.height - getHeight() / 2);
+        int x = (sizeScreen.width - getWidth()) / 2;
+        int y = (sizeScreen.height - getHeight()) / 2;
         setLocation(x, y);
     }
 
@@ -174,11 +174,20 @@ public class BookForm extends JFrame {
         // Creamos el elemento idText oculto.
         idText = new JTextField("");
         idText.setVisible(false);
-        this.tableModelBooks = new DefaultTableModel(0, 5); //Le indico que va a tener 5 Columnas
+        //Le indico que va a tener 5 Columnas
+        this.tableModelBooks = new DefaultTableModel(0, 5){
+            //No permito que la tabla sea editable
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         String[] headers = {"ID", "Titulo", "Autor", "Precio", "Stock"};
         this.tableModelBooks.setColumnIdentifiers(headers);
         //Instancio el objeto JTable
         this.bookTable = new JTable(tableModelBooks);
+        //Evitar que el usuario seleccione varios campos en la tabla, deshabilito lo siguiente
+        bookTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         showAllBooks();
     }
 
